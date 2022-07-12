@@ -1,0 +1,22 @@
+@import "~antd/dist/antd.css";
+
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-logo {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  height: 32px;
+  margin: 16px;
+  background: #fff;
+}
+
+.app-layout-sub-header-background {
+  background: #fff;
+}
+
+.app-layout-background {
+  background: #fff;
+}
