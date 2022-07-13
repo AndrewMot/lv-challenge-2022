@@ -135,7 +135,7 @@ Frontend application is under `/webapp`. In order to install dependencies and st
 
 5. Implement any tests you find useful to validate the functionalities
 
-6. Make any adjustment you need to consume the APIs, you have created or modified, from the UI 
+6. Make any adjustment you need to consume the APIs you have created or modified, from the UI 
 
 ## Bonus (optional requirements)
 
@@ -154,11 +154,11 @@ Frontend application is under `/webapp`. In order to install dependencies and st
 
 ## Notes
 
-- An in-memory database is already configured, and it is good enough for our purposes unless you want to scale it  
-- It's your time to show off your skills, you are free to expand on any of the requirements  
+- An in-memory database is already configured, and it is good enough for our purposes unless you want to scale it up
+- It's your time to show your skills off, you are free to expand on any of the requirements  
 
 ## Who do I talk to?
 ### Contact
 
-Once you finish the challenge or if you have any questions, please let us know and reach to abossi@livevox.com
+Once you finish the challenge or if you have any questions, please let us know and reach out to abossi@livevox.com
 
