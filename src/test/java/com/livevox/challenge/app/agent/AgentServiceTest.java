@@ -1,6 +1,7 @@
 package com.livevox.challenge.app.agent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -67,6 +68,31 @@ public class AgentServiceTest {
         assertEquals(DataGenerator.PHONE_NUMBER, response.getPhone());
         assertEquals(DataGenerator.AGENT_ID, response.getId());
         assertEquals(DataGenerator.CALL_CENTER_ID, response.getCallCenterId());
+        verify(agentRepository).save(agent);
+    }
+
+    @Test
+    @DisplayName("When Agent doesn't exist then NotFoundException when unassigned")
+    void agentNotFoundUnassign() {
+        given(agentRepository.findById(any())).willReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> agentService.unassign(DataGenerator.AGENT_ID));
+    }
+
+    @Test
+    @DisplayName("When Agent exist then Agent inactive and Response")
+    void agentUnactivated() {
+        final Agent agent = mock(Agent.class);
+        given(agentRepository.findById(any())).willReturn(Optional.of(agent));
+        given(agentRepository.save(any())).willReturn(agent);
+        when(agent.getFirstName()).thenReturn(DataGenerator.FIRST_NAME);
+        when(agent.getLastName()).thenReturn(DataGenerator.LAST_NAME);
+        when(agent.getId()).thenReturn(DataGenerator.AGENT_ID);
+        final AssignResponse response = agentService.unassign(DataGenerator.AGENT_ID);
+        assertEquals(DataGenerator.FIRST_NAME, response.getFirstName());
+        assertEquals(DataGenerator.LAST_NAME, response.getLastName());
+        assertNull(response.getPhone());
+        assertEquals(DataGenerator.AGENT_ID, response.getId());
+        assertNull(response.getCallCenterId());
         verify(agentRepository).save(agent);
     }
 
