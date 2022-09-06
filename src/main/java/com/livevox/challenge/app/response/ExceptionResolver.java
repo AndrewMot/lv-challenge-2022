@@ -14,13 +14,13 @@ public class ExceptionResolver {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public HashMap<String, String> handleNoHandlerFound(final NotFoundException e) {
+    public HashMap<String, String> handleNotFound(final NotFoundException e) {
         return getBodyFromMessage(e.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public HashMap<String, String> handleNoHandlerFound(final BadRequestException e) {
+    public HashMap<String, String> handleBadRequest(final BadRequestException e) {
         return getBodyFromMessage(e.getMessage());
     }
 
