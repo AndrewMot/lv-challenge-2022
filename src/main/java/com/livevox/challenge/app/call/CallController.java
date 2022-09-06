@@ -10,10 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/calls")
-public class CallApi {
+public class CallController {
 
     @Autowired
-    private CallDb db;
+    private CallRepository db;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Call> list() {

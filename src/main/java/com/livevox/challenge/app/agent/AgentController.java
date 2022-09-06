@@ -9,10 +9,10 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/agents")
-public class AgentApi {
+public class AgentController {
 
     @Autowired
-    private AgentDb db;
+    private AgentRepository db;
 
     @GetMapping
     public List<Agent> list() {
