@@ -1,4 +1,4 @@
-package com.livevox.challenge.app;
+package com.livevox.challenge.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

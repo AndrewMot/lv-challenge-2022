@@ -1,4 +1,4 @@
-package com.livevox.challenge.app;
+package com.livevox.challenge.app.agent;
 
 import lombok.Data;
 

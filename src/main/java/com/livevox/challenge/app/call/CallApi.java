@@ -1,4 +1,4 @@
-package com.livevox.challenge.app;
+package com.livevox.challenge.app.call;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
