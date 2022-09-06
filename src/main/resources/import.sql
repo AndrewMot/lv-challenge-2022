@@ -18,3 +18,5 @@ INSERT INTO calls (id, customer_full_name, customer_phone, customer_country_phon
 INSERT INTO calls (id, customer_full_name, customer_phone, customer_country_phone_code, agent_extension, received_on) VALUES (9, 'Óscar Figueroa', '366-987-5451', 57, null, '2021-11-26 10:39:04');
 INSERT INTO calls (id, customer_full_name, customer_phone, customer_country_phone_code, agent_extension, received_on) VALUES (10, 'Lionel Messi', '940-651-9178', 54, null, '2021-11-29 12:04:23');
 
+INSERT INTO call_centers (id, name, country_name, phone) VALUES (1, 'tales', 'USA', '366-987-5451');
+
