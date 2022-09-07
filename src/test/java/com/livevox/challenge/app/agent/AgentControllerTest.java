@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.livevox.challenge.app.DataGenerator;
 import com.livevox.challenge.app.response.Constants;
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
+import com.livevox.challenge.app.response.exceptions.ConflictException;
 import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,6 +83,17 @@ public class AgentControllerTest {
         final MockHttpServletResponse response = getResponse(ASSIGN_URL, requestBody);
 
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("When duplicated extension exists then Conflict")
+    void duplicatedExtension() throws Exception {
+        given(agentService.assign(DataGenerator.AGENT_ID, DataGenerator.CALL_CENTER_ID))
+            .willThrow(new ConflictException(Constants.UNIQUE_EXTENSION_MESSAGE));
+
+        final MockHttpServletResponse response = getResponse(ASSIGN_URL, requestBody);
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
     }
 
     @Test
