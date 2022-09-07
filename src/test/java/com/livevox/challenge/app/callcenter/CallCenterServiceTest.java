@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.livevox.challenge.app.DataGenerator;
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
 import com.livevox.challenge.app.response.exceptions.ConflictException;
+import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -72,5 +74,21 @@ public class CallCenterServiceTest {
         given(callCenterRepository.save(any())).willReturn(callCenter);
         callCenterService.create(callCenter);
         verify(callCenterRepository).save(callCenter);
+    }
+
+    @Test
+    @DisplayName("When CallCenter doesn't exist then Not found")
+    void notFound() {
+        given(callCenterRepository.findById(anyLong())).willReturn(Optional.empty());
+        assertThrows(NotFoundException.class,
+                     () -> callCenterService.retrieve(1L));
+    }
+
+    @Test
+    @DisplayName("When Call center exists then object")
+    void exists() {
+        final CallCenter callCenter = mock(CallCenter.class);
+        given(callCenterRepository.findById(anyLong())).willReturn(Optional.of(callCenter));
+        assertNotNull(callCenterService.retrieve(1L));
     }
 }
