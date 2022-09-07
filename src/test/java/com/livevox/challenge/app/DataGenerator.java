@@ -8,5 +8,4 @@ public class DataGenerator {
     public static final String LAST_NAME = "Doe";
     public static final String PHONE_NUMBER = "1234";
     public static final String EXTENSION = "1234";
-    public static final String NAME = "Bla";
 }
