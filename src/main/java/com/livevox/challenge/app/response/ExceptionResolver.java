@@ -27,7 +27,7 @@ public class ExceptionResolver {
 
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public HashMap<String, String> handleNoHandlerFound(final ConflictException e) {
+    public HashMap<String, String> handleConflict(final ConflictException e) {
         return getBodyFromMessage(e.getMessage());
     }
 
