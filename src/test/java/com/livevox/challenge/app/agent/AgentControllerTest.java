@@ -13,11 +13,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -25,6 +28,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureJsonTesters
 @SpringBootTest
@@ -148,6 +153,25 @@ public class AgentControllerTest {
             .andReturn().getResponse();
 
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("When list then pagination must be correct")
+    void pageable() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders.get(BASE_URL)
+                        .param("page", "2")
+                        .param("size", "2"))
+            .andExpect(status().isOk());
+
+        final ArgumentCaptor<Pageable> pageableCaptor =
+            ArgumentCaptor.forClass(Pageable.class);
+        verify(agentService).list(pageableCaptor.capture());
+        final PageRequest pageable = (PageRequest) pageableCaptor.getValue();
+
+        Assertions.assertThat(pageable.isPaged()).isTrue();
+        Assertions.assertThat(pageable.getPageSize()).isEqualTo(2);
+        Assertions.assertThat(pageable.getPageNumber()).isEqualTo(2);
     }
 
     private MockHttpServletResponse getResponse(final String url, final String requestBody) throws Exception {

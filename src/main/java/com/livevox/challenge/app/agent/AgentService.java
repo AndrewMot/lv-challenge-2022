@@ -9,6 +9,8 @@ import com.livevox.challenge.app.response.exceptions.BadRequestException;
 import com.livevox.challenge.app.response.exceptions.ConflictException;
 import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,5 +60,9 @@ public class AgentService {
             .lastName(agent.getLastName())
             .phone(null)
             .build();
+    }
+
+    public Page<Agent> list(final Pageable pageable) {
+        return agentRepository.findAll(pageable);
     }
 }
