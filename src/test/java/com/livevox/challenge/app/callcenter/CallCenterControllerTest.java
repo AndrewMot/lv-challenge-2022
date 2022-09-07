@@ -4,19 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.livevox.challenge.app.DataGenerator;
-import com.livevox.challenge.app.agent.AgentService;
-import com.livevox.challenge.app.agent.AssignRequest;
-import com.livevox.challenge.app.agent.AssignResponse;
 import com.livevox.challenge.app.response.Constants;
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
 import com.livevox.challenge.app.response.exceptions.ConflictException;
-import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,7 +24,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @AutoConfigureJsonTesters
 @SpringBootTest
@@ -102,26 +95,7 @@ public class CallCenterControllerTest {
 
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
-
-//    @Test
-//    @DisplayName("When Agent and Call Center Exist then Successful response")
-//    void successful() throws Exception {
-//        final AssignResponse objectResponse = AssignResponse.builder()
-//            .id(DataGenerator.AGENT_ID)
-//            .callCenterId(DataGenerator.CALL_CENTER_ID)
-//            .firstName(DataGenerator.FIRST_NAME)
-//            .lastName(DataGenerator.LAST_NAME)
-//            .phone(DataGenerator.PHONE_NUMBER)
-//            .build();
-//
-//        given(agentService.assign(DataGenerator.AGENT_ID, DataGenerator.CALL_CENTER_ID))
-//            .willReturn(objectResponse);
-//
-//        final MockHttpServletResponse response = getResponse(ASSIGN_URL, requestBody);
-//
-//        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-//    }
-
+    
     private String getBodyFromObject() throws JsonProcessingException {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
