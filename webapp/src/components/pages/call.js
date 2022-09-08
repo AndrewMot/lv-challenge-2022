@@ -31,7 +31,7 @@ function useGetCalls() {
         throw new Error("Cannot fetch calls");
       })
       .then((data) => {
-        setCalls(data);
+        setCalls(data.content);
       })
       .catch((e) => {
         console.error(e);
