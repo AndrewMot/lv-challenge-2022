@@ -14,4 +14,10 @@ public interface CallRepository extends JpaRepository<Call, Long> {
         nativeQuery = true)
     List<CallCountPerCountry> getCallsRoutedPerCountry();
 
+    @Query(value =
+        "SELECT COUNT(*) AS count, ca.customer_country_phone_code AS countryCode FROM calls ca GROUP BY ca" +
+        ".customer_country_phone_code ",
+        nativeQuery = true)
+    List<CallCountPerCountry> getCallsPerCountry();
+
 }
