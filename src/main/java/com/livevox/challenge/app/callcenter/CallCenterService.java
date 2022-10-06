@@ -7,6 +7,8 @@ import com.livevox.challenge.app.response.exceptions.BadRequestException;
 import com.livevox.challenge.app.response.exceptions.ConflictException;
 import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,5 +40,9 @@ public class CallCenterService {
     public CallCenter retrieve(final Long id) {
         return callCenterRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(Constants.CALL_CENTER_NOT_FOUND_MESSAGE));
+    }
+
+    public Page<CallCenter> list(final Pageable pageable) {
+        return callCenterRepository.findAll(pageable);
     }
 }
