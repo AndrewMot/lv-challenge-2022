@@ -36,4 +36,19 @@ public class AgentService {
             .phone(callCenter.getPhone())
             .build();
     }
+
+    public AssignResponse unassign(final Long id) {
+        final Agent agent =
+            agentRepository.findById(id).orElseThrow(() -> new NotFoundException(Constants.AGENT_NOT_FOUND_MESSAGE));
+        agent.setCallCenterId(null);
+        agent.setActive(false);
+        agentRepository.save(agent);
+        return AssignResponse.builder()
+            .callCenterId(null)
+            .id(agent.getId())
+            .firstName(agent.getFirstName())
+            .lastName(agent.getLastName())
+            .phone(null)
+            .build();
+    }
 }

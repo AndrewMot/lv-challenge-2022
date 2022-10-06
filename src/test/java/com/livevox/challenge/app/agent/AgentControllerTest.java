@@ -33,6 +33,7 @@ public class AgentControllerTest {
 
     private static final String BASE_URL = "/agents/";
     private static final String ASSIGN_URL = String.format("%s%d/assign", BASE_URL, DataGenerator.AGENT_ID);
+    private static final String UNASSIGN_URL = String.format("%s%d/unassign", BASE_URL, DataGenerator.AGENT_ID);
     private String requestBody;
     @Autowired
     private MockMvc mvc;
@@ -98,6 +99,41 @@ public class AgentControllerTest {
             .willReturn(objectResponse);
 
         final MockHttpServletResponse response = getResponse(ASSIGN_URL, requestBody);
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("When Agent doesn't exist then Not Found when unassign")
+    void agentNotExistUnassign() throws Exception {
+        given(agentService.unassign(DataGenerator.AGENT_ID))
+            .willThrow(new NotFoundException(Constants.AGENT_NOT_FOUND_MESSAGE));
+
+        final MockHttpServletResponse response = getResponse(UNASSIGN_URL, requestBody);
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    @DisplayName("When Agent Exists then Successful response when unassigned")
+    void successfulUnassign() throws Exception {
+        final AssignResponse objectResponse = AssignResponse.builder()
+            .id(DataGenerator.AGENT_ID)
+            .callCenterId(null)
+            .firstName(DataGenerator.FIRST_NAME)
+            .lastName(DataGenerator.LAST_NAME)
+            .phone(null)
+            .build();
+
+        given(agentService.unassign(DataGenerator.AGENT_ID))
+            .willReturn(objectResponse);
+
+        final MockHttpServletResponse response = mvc.perform(
+                MockMvcRequestBuilders.patch(UNASSIGN_URL)
+                    .content(requestBody)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andReturn().getResponse();
 
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }

@@ -42,6 +42,11 @@ public class AgentController {
             .orElseThrow(() -> new BadRequestException(Constants.CALL_CENTER_ID_REQUIRED_MESSAGE));
     }
 
+    @PatchMapping(value = "{id}/unassign")
+    public AssignResponse unassign(@PathVariable Long id) {
+        return agentService.unassign(id);
+    }
+
     @PostMapping
     public Agent create(@RequestBody Agent agent) {
         return db.save(agent);
