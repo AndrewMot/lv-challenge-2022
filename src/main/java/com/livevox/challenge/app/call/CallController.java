@@ -1,19 +1,16 @@
 package com.livevox.challenge.app.call;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/calls")
 public class CallController {
-
-    @Autowired
-    private CallRepository db;
 
     private final CallService service;
 
@@ -23,8 +20,8 @@ public class CallController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Call> list() {
-        return db.findAll();
+    public Page<Call> list(final Pageable pageable) {
+        return service.list(pageable);
     }
 
     @GetMapping(value = "routed")

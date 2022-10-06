@@ -1,8 +1,8 @@
 
 -- agents
-INSERT INTO agents (id, first_name, last_name, extension, active, call_center_id) VALUES (1, 'Diana', 'Prince', '123', true, null);
+INSERT INTO agents (id, first_name, last_name, extension, active, call_center_id) VALUES (1, 'Diana', 'Prince', '123', true, 1);
 INSERT INTO agents (id, first_name, last_name, extension, active, call_center_id) VALUES (2, 'Bruce', 'Wayne', '456', false, null);
-INSERT INTO agents (id, first_name, last_name, extension, active, call_center_id) VALUES (3, 'Clark', 'Kent', '789', true, null);
+INSERT INTO agents (id, first_name, last_name, extension, active, call_center_id) VALUES (3, 'Clark', 'Kent', '789', true, 2);
 INSERT INTO agents (id, first_name, last_name, extension, active, call_center_id) VALUES (4, 'Peter', 'Parker', '111', true, null);
 INSERT INTO agents (id, first_name, last_name, extension, active, call_center_id) VALUES (5, 'Louis', 'Lane', '222', true, null);
 
@@ -18,5 +18,6 @@ INSERT INTO calls (id, customer_full_name, customer_phone, customer_country_phon
 INSERT INTO calls (id, customer_full_name, customer_phone, customer_country_phone_code, agent_extension, received_on) VALUES (9, 'Óscar Figueroa', '366-987-5451', 57, null, '2021-11-26 10:39:04');
 INSERT INTO calls (id, customer_full_name, customer_phone, customer_country_phone_code, agent_extension, received_on) VALUES (10, 'Lionel Messi', '940-651-9178', 54, null, '2021-11-29 12:04:23');
 
-INSERT INTO call_centers (id, name, country_name, phone) VALUES (1, 'tales', 'USA', '366-987-5451');
+INSERT INTO call_centers (id, name, country_name, phone) VALUES (1, 'tales', 'Spain', '366-987-5451');
+INSERT INTO call_centers (id, name, country_name, phone) VALUES (2, 'tales', 'India', '366-987-5451');
 

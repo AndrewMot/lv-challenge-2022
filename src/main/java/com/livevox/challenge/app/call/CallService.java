@@ -11,6 +11,8 @@ import com.livevox.challenge.app.vendor.RemoteCallResponse;
 import com.livevox.challenge.app.vendor.VendorClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,6 +28,10 @@ public class CallService {
     public CallService(final CallRepository callRepository, final VendorClient vendorClient) {
         this.callRepository = callRepository;
         this.vendorClient = vendorClient;
+    }
+
+    public Page<Call> list(final Pageable pageable) {
+        return callRepository.findAll(pageable);
     }
 
     public Long countRoutedCalls() {
