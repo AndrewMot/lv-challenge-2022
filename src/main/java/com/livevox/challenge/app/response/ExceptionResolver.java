@@ -3,6 +3,7 @@ package com.livevox.challenge.app.response;
 import java.util.HashMap;
 
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
+import com.livevox.challenge.app.response.exceptions.ConflictException;
 import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +22,12 @@ public class ExceptionResolver {
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public HashMap<String, String> handleBadRequest(final BadRequestException e) {
+        return getBodyFromMessage(e.getMessage());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public HashMap<String, String> handleConflict(final ConflictException e) {
         return getBodyFromMessage(e.getMessage());
     }
 

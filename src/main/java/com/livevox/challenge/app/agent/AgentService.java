@@ -1,9 +1,12 @@
 package com.livevox.challenge.app.agent;
 
+import java.util.Optional;
+
 import com.livevox.challenge.app.callcenter.CallCenter;
 import com.livevox.challenge.app.callcenter.CallCenterRepository;
 import com.livevox.challenge.app.response.Constants;
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
+import com.livevox.challenge.app.response.exceptions.ConflictException;
 import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,11 @@ public class AgentService {
             agentRepository.findById(id).orElseThrow(() -> new NotFoundException(Constants.AGENT_NOT_FOUND_MESSAGE));
         final CallCenter callCenter = callCenterRepository.findById(callCenterId)
             .orElseThrow(() -> new BadRequestException(Constants.CALL_CENTER_NOT_FOUND_MESSAGE));
+        final Optional<Agent> duplicatedExtension =
+            agentRepository.findAgentByCallCenterIdAndExtension(callCenterId, agent.getExtension());
+        if (duplicatedExtension.isPresent()) {
+            throw new ConflictException(Constants.UNIQUE_EXTENSION_MESSAGE);
+        }
         agent.setCallCenterId(callCenterId);
         agent.setActive(true);
         agentRepository.save(agent);

@@ -1,20 +1,12 @@
 package com.livevox.challenge.app.agent;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.Optional;
 
 import com.livevox.challenge.app.DataGenerator;
 import com.livevox.challenge.app.callcenter.CallCenter;
 import com.livevox.challenge.app.callcenter.CallCenterRepository;
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
+import com.livevox.challenge.app.response.exceptions.ConflictException;
 import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +14,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AgentServiceTest {
@@ -38,7 +41,8 @@ public class AgentServiceTest {
     @DisplayName("When Agent doesn't exist then NotFoundException")
     void agentNotFound() {
         given(agentRepository.findById(any())).willReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> agentService.assign(DataGenerator.AGENT_ID, DataGenerator.CALL_CENTER_ID));
+        assertThrows(NotFoundException.class,
+                     () -> agentService.assign(DataGenerator.AGENT_ID, DataGenerator.CALL_CENTER_ID));
     }
 
     @Test
@@ -47,7 +51,22 @@ public class AgentServiceTest {
         final Agent agent = mock(Agent.class);
         given(agentRepository.findById(any())).willReturn(Optional.of(agent));
         given(callCenterRepository.findById(any())).willReturn(Optional.empty());
-        assertThrows(BadRequestException.class, () -> agentService.assign(DataGenerator.AGENT_ID, DataGenerator.CALL_CENTER_ID));
+        assertThrows(BadRequestException.class,
+                     () -> agentService.assign(DataGenerator.AGENT_ID, DataGenerator.CALL_CENTER_ID));
+    }
+
+    @Test
+    @DisplayName("When another agent exists for the call center id and extension then ConflictException")
+    void duplicatedExtension() {
+        final Agent agent = mock(Agent.class);
+        final CallCenter callCenter = mock(CallCenter.class);
+        when(agent.getExtension()).thenReturn(DataGenerator.EXTENSION);
+        given(agentRepository.findById(anyLong())).willReturn(Optional.of(agent));
+        given(callCenterRepository.findById(anyLong())).willReturn(Optional.of(callCenter));
+        given(agentRepository.findAgentByCallCenterIdAndExtension(anyLong(), anyString())).willReturn(
+            Optional.of(agent));
+        assertThrows(ConflictException.class,
+                     () -> agentService.assign(DataGenerator.AGENT_ID, DataGenerator.CALL_CENTER_ID));
     }
 
     @Test
@@ -55,8 +74,10 @@ public class AgentServiceTest {
     void agentActivated() {
         final Agent agent = mock(Agent.class);
         final CallCenter callCenter = mock(CallCenter.class);
-        given(agentRepository.findById(any())).willReturn(Optional.of(agent));
-        given(callCenterRepository.findById(any())).willReturn(Optional.of(callCenter));
+        when(agent.getExtension()).thenReturn(DataGenerator.EXTENSION);
+        given(agentRepository.findById(anyLong())).willReturn(Optional.of(agent));
+        given(callCenterRepository.findById(anyLong())).willReturn(Optional.of(callCenter));
+        given(agentRepository.findAgentByCallCenterIdAndExtension(anyLong(), anyString())).willReturn(Optional.empty());
         given(agentRepository.save(any())).willReturn(agent);
         when(agent.getFirstName()).thenReturn(DataGenerator.FIRST_NAME);
         when(agent.getLastName()).thenReturn(DataGenerator.LAST_NAME);
