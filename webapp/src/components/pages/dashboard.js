@@ -2,28 +2,44 @@ import { React, useState, useEffect } from "react";
 import { Statistic, Card, Row, Col, Divider, Alert } from "antd";
 import { ShareAltOutlined, UserSwitchOutlined, PhoneOutlined, WarningOutlined } from "@ant-design/icons";
 
-import { API_BASE_URL } from "../../utils/constants";
+import { API_BASE_URL, COUNTRIES } from "../../utils/constants";
 
 import CallsPerCountryPie from "../stats/calls-per-country-pie";
 
-const callsPerCountryData = [
-  {
-    type: "Colombia",
-    value: 27,
-  },
-  {
-    type: "India",
-    value: 25,
-  },
-  {
-    type: "United States",
-    value: 18,
-  },
-  {
-    type: "Australia",
-    value: 15,
-  },
-];
+function useGetCallsPerCountry() {
+  const [error, setError] = useState();
+  const [callsPerCountryData, setCallsPerCountryData] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/calls/country`, {
+      method: "GET",
+      headers: { "Accept": "application/json" },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw new Error("Cannot fetch calls per country");
+      })
+      .then((data) => {
+        const result = [];
+        for(var c in data) {
+          result.push({
+            type: COUNTRIES.find((country) => country.phoneCode === data[c].countryCode).name,
+            value: data[c].count
+          });
+        }
+        setCallsPerCountryData(result);
+      })
+      .catch((e) => {
+        console.error(e);
+        setError(e);
+      });
+  }, []);
+
+  return { callsPerCountryData, error };
+}
 
 function useGetRoutedCalls() {
   const [error, setError] = useState();
@@ -41,7 +57,7 @@ function useGetRoutedCalls() {
           return response.json();
         }
 
-        throw new Error("Cannot fetch call centers");
+        throw new Error("Cannot fetch routed calls");
       })
       .then((data) => {
         setRoutedCalls(data);
@@ -55,6 +71,14 @@ function useGetRoutedCalls() {
 
   return { routedCalls, error, isLoading };
 }
+
+const CountryPie = () => {
+  const { callsPerCountryData, error } = useGetCallsPerCountry();
+  if (error) {
+    return <Alert message={error.message} type="error" showIcon />;
+  }
+  return <CallsPerCountryPie data={callsPerCountryData} />;
+};
 
 const Dashboard = () => {
   const { routedCalls, error, isLoading } = useGetRoutedCalls();
@@ -120,7 +144,7 @@ const Dashboard = () => {
       </Divider>
       <Row gutter={16}>
         <Col span={20}>
-          <CallsPerCountryPie data={callsPerCountryData} />
+          <CountryPie />
         </Col>
       </Row>
     </div>

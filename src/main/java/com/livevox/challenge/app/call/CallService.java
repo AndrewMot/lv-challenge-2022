@@ -2,6 +2,7 @@ package com.livevox.challenge.app.call;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,6 +33,10 @@ public class CallService {
 
     public Page<Call> list(final Pageable pageable) {
         return callRepository.findAll(pageable);
+    }
+
+    public List<CallCountPerCountry> listCallsPerCountry() {
+        return callRepository.getCallsPerCountry();
     }
 
     public Long countRoutedCalls() {

@@ -1,5 +1,7 @@
 package com.livevox.challenge.app.call;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,11 @@ public class CallController {
     @GetMapping(value = "routed")
     public Long countRoutedCalls() {
         return service.countRoutedCalls();
+    }
+
+    @GetMapping(value = "country")
+    public List<CallCountPerCountry> listCallsPerCountry() {
+        return service.listCallsPerCountry();
     }
 
 }
