@@ -46,7 +46,7 @@ function useGetCallCenters(dataVersion) {
         throw new Error("Cannot fetch call centers");
       })
       .then((data) => {
-        setCallCenters(data);
+        setCallCenters(data.content);
       })
       .catch((e) => {
         console.error(e);

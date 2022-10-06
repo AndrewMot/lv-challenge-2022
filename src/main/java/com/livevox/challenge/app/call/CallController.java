@@ -15,9 +15,21 @@ public class CallController {
     @Autowired
     private CallRepository db;
 
+    private final CallService service;
+
+    @Autowired
+    public CallController(final CallService service) {
+        this.service = service;
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Call> list() {
         return db.findAll();
+    }
+
+    @GetMapping(value = "routed")
+    public Long countRoutedCalls() {
+        return service.countRoutedCalls();
     }
 
 }

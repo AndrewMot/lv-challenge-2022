@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
         configuration.addAllowedHeader("*");
         configuration.addAllowedOrigin("*");
 
-        Arrays.asList(GET, POST).forEach(configuration::addAllowedMethod);
+        Arrays.asList(GET, POST, PATCH).forEach(configuration::addAllowedMethod);
 
         source.registerCorsConfiguration("/**", configuration);
 

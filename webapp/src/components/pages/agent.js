@@ -52,7 +52,7 @@ function useGetAgents(dataVersion) {
         throw new Error("Cannot fetch agents");
       })
       .then((data) => {
-        setAgents(data);
+        setAgents(data.content);
       })
       .catch((e) => {
         console.error(e);
@@ -216,7 +216,7 @@ function useGetCallCenters() {
         throw new Error("Cannot fetch call centers");
       })
       .then((data) => {
-        setCallCenters(data);
+        setCallCenters(data.content);
       })
       .catch((e) => {
         console.error(e);

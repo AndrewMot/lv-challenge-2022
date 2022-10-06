@@ -1,4 +1,4 @@
-package com.livevox.challenge.app.call;
+package com.livevox.challenge.app.vendor;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class VendorResponse {
+public class RemoteCallResponse {
 
-    private List<VendorCall> calls;
+    private List<RemoteCall> calls;
 
     @NoArgsConstructor
     @Setter
     @Getter
-    public static class VendorCall {
+    public static class RemoteCall {
 
         private Long id;
         @JsonAlias("first_name")
