@@ -1,12 +1,13 @@
 package com.livevox.challenge.app.agent;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.livevox.challenge.app.response.Constants;
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +32,8 @@ public class AgentController {
     }
 
     @GetMapping
-    public List<Agent> list() {
-        return db.findAll();
+    public Page<Agent> list(final Pageable pageable) {
+        return agentService.list(pageable);
     }
 
     @PatchMapping(value = "{id}/assign")
