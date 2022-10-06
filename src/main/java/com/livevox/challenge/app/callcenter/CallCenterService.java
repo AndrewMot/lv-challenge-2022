@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.livevox.challenge.app.response.Constants;
 import com.livevox.challenge.app.response.exceptions.BadRequestException;
 import com.livevox.challenge.app.response.exceptions.ConflictException;
+import com.livevox.challenge.app.response.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -32,5 +33,10 @@ public class CallCenterService {
             throw new ConflictException(Constants.CALL_CENTER_UNIQUE_NAME_MESSAGE);
         }
         return callCenterRepository.save(callCenter);
+    }
+
+    public CallCenter retrieve(final Long id) {
+        return callCenterRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(Constants.CALL_CENTER_NOT_FOUND_MESSAGE));
     }
 }
