@@ -1,4 +1,4 @@
-package com.livevox.challenge.app;
+package com.livevox.challenge.app.call;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
